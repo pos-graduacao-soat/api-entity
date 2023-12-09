@@ -1,17 +1,14 @@
 import { MongoClient } from 'mongodb'
+import { env } from '../../main/env'
 
-export class MongoClinet {
+export class MongoDbClient {
   private static instance: MongoClient
 
-  private constructor() { }
-
   static async getInstance(): Promise<MongoClient> {
-    if (!MongoClinet.instance) {
-      MongoClinet.instance = await MongoClient.connect('mongodb://localhost:27017', {
-
-
-      })
+    if (!this.instance) {
+      this.instance = await MongoClient.connect(env.mongoUrl)
     }
-    return MongoClinet.instance
+
+    return this.instance
   }
 }
