@@ -5,10 +5,13 @@ import { CreateProductController } from '../../controllers/CreateProductControll
 import { ListProductsController } from '../../controllers/ListProductsController'
 import { UpdateProductController } from '../../controllers/UpdateProductController'
 
-const productRoutes = Router()
 
-productRoutes.post('/products', adaptRoute(container.resolve(CreateProductController)))
-productRoutes.get('/products', adaptRoute(container.resolve(ListProductsController)))
-productRoutes.patch('/products/:productId', adaptRoute(container.resolve(UpdateProductController)))
+function registerProductRoutes(router: Router) {
+  router.post('/products', adaptRoute(container.resolve(CreateProductController)))
+  router.get('/products', adaptRoute(container.resolve(ListProductsController)))
+  router.patch('/products/:productId', adaptRoute(container.resolve(UpdateProductController)))
 
-export { productRoutes }
+  return router
+}
+
+export { registerProductRoutes }

@@ -3,8 +3,14 @@ import { config } from 'dotenv'
 
 config()
 
-import '../main/factories'
+import { initializeContainer } from './factories'
 import { startHttpServer } from '../presentation/gateway/httpServer'
 
+async function startApp() {
+  await initializeContainer()
+  startHttpServer()
+}
 
-startHttpServer()
+startApp().catch(error => {
+  console.error('Failed to start app:', error)
+})

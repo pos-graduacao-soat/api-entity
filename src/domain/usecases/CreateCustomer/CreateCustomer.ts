@@ -1,12 +1,12 @@
-import { inject, injectable } from "tsyringe";
-import { ICustomerRepository } from "../../ports/repositories/Customer";
-import { ICreateCustomerUseCase } from "./ICreateCustomer";
-import { CreateCustomerDTO } from "./CreateCustomerDTO";
-import { Customer } from "../../entities/Customer";
-import { MissingEmailError } from "../../errors/MissingEmail";
-import { MissingNameError } from "../../errors/MissingName";
-import { MissingNecessaryDataError } from "../../errors/MissingNecessaryData";
-import { CustomerAlreadyExistsError } from "../../errors/CustomerAlreadyExists";
+import { inject, injectable } from 'tsyringe'
+import { ICustomerRepository } from '../../ports/repositories/Customer'
+import { ICreateCustomerUseCase } from './ICreateCustomer'
+import { CreateCustomerDTO } from './CreateCustomerDTO'
+import { Customer } from '../../entities/Customer'
+import { MissingEmailError } from '../../errors/MissingEmail'
+import { MissingNameError } from '../../errors/MissingName'
+import { MissingNecessaryDataError } from '../../errors/MissingNecessaryData'
+import { CustomerAlreadyExistsError } from '../../errors/CustomerAlreadyExists'
 
 @injectable()
 export class CreateCustomerUseCase implements ICreateCustomerUseCase {
@@ -24,14 +24,14 @@ export class CreateCustomerUseCase implements ICreateCustomerUseCase {
 
     await this.checkIfCustomerAlreadyExists(customer)
 
-    const isCreated = await this.customerRepository.create(customer);
+    const isCreated = await this.customerRepository.create(customer)
 
     if (!isCreated) throw new Error('Customer not created')
 
     const createdCostumer = await this.customerRepository.getById(customer.id)
 
 
-    return createdCostumer!;
+    return createdCostumer!
   }
 
   private validateParams(params: CreateCustomerDTO) {

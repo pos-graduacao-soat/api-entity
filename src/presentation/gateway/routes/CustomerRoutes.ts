@@ -3,8 +3,10 @@ import { container } from 'tsyringe'
 import { adaptRoute } from '../../adapters/ExpressRouteAdapter'
 import { CreateCustomerController } from '../../controllers/CreateCustomerController'
 
-const customerRoutes = Router()
+function registerCustomerRoutes(router: Router) {
+  router.post('/customers', adaptRoute(container.resolve(CreateCustomerController)))
 
-customerRoutes.post('/customers', adaptRoute(container.resolve(CreateCustomerController)))
+  return router
+}
 
-export { customerRoutes }
+export { registerCustomerRoutes }
