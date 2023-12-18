@@ -39,6 +39,35 @@ paths:
           $ref: "#/components/responses/BadRequest"
         500:
           $ref: "#/components/responses/InternalServerError"
+  /customers/{customerId}:
+    get:
+      tags:
+        - Customers
+      summary: Busca um cliente por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id do cliente
+          schema:
+            type: string
+      responses:
+        200:
+          description: Cliente encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/CreatedCustomerSchema"
+                  message:
+                    type: string
+                    description: Mensagem de sucesso.
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalServerError"
   /products:
     post:
       tags:
