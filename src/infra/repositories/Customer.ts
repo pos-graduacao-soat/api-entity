@@ -18,7 +18,7 @@ export class CustomerRepository implements ICustomerRepository {
       id: customer.id,
       name: customer.name,
       email: customer.email,
-      document_number: customer.documentNumber
+      documentNumber: customer.documentNumber
     })
 
     return createdCustomer.acknowledged
@@ -30,12 +30,12 @@ export class CustomerRepository implements ICustomerRepository {
     if (!customer) return null
 
     return new Customer({
-      createdAt: customer.created_at,
-      updatedAt: customer.updated_at,
+      createdAt: customer.createdAt,
+      updatedAt: customer.updatedAt,
       id: customer.id,
       name: customer.name,
       email: customer.email,
-      documentNumber: customer.document_number
+      documentNumber: customer.documentNumber
     })
   }
 
@@ -45,12 +45,12 @@ export class CustomerRepository implements ICustomerRepository {
     if (!customer) return null
 
     return new Customer({
-      createdAt: customer.created_at,
-      updatedAt: customer.updated_at,
+      createdAt: customer.createdAt,
+      updatedAt: customer.updatedAt,
       id: customer.id,
       name: customer.name,
       email: customer.email,
-      documentNumber: customer.document_number
+      documentNumber: customer.documentNumber
     })
   }
 
@@ -60,12 +60,12 @@ export class CustomerRepository implements ICustomerRepository {
     if (!customer) return null
 
     return new Customer({
-      createdAt: customer.created_at,
-      updatedAt: customer.updated_at,
+      createdAt: customer.createdAt,
+      updatedAt: customer.updatedAt,
       id: customer.id,
       name: customer.name,
       email: customer.email,
-      documentNumber: customer.document_number
+      documentNumber: customer.documentNumber
     })
   }
 }
