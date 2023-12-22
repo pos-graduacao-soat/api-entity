@@ -1,4 +1,4 @@
-import { IHttpResponse } from "../interfaces/IHttpResponse"
+import { IHttpResponse } from '../interfaces/IHttpResponse'
 
 const created = (body: Record<string, any>, message?: string): IHttpResponse => ({
   statusCode: 201,
