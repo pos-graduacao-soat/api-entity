@@ -1,9 +1,9 @@
 import { inject, injectable } from 'tsyringe'
 import { IController } from '../interfaces/IController'
 import { IHttpRequest } from '../interfaces/IHttpRequest'
-import { ok } from '../adapters/HttpResponseAdapter'
-import { ICreateCustomerUseCase } from '../../domain/usecases/CreateCustomer/ICreateCustomer'
+import { created } from '../adapters/HttpResponseAdapter'
 import { ICreateProductUseCase } from '../../domain/usecases/CreateProduct/ICreateProduct'
+import { IHttpResponse } from '../interfaces/IHttpResponse'
 
 @injectable()
 export class CreateProductController implements IController {
@@ -11,11 +11,11 @@ export class CreateProductController implements IController {
     @inject('ICreateProductUseCase')
     readonly createProductUseCase: ICreateProductUseCase
   ) { }
-  async handle(httpRequest: IHttpRequest): Promise<any> {
-    const { name, category, description, price } = httpRequest.body
+  async handle(httpRequest: IHttpRequest): Promise<IHttpResponse> {
+    const { name, category, description, price, image } = httpRequest.body
 
-    const result = await this.createProductUseCase.create({ name, category, description, price })
+    const result = await this.createProductUseCase.create({ name, category, description, price, image })
 
-    return ok(result, 'Product created')
+    return created(result, 'Product created')
   }
 } 
