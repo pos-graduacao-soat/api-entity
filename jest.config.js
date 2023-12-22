@@ -4,7 +4,7 @@ module.exports = {
   roots: ['<rootDir>'],
   collectCoverage: true,
   coverageReporters: ['text'],
-  testPathIgnorePatterns: ['<rootDir>/src/domain/ports/', '<rootDir>/src/domain/errors/'],
+  testPathIgnorePatterns: ['<rootDir>/src/domain/ports/', '<rootDir>/src/domain/errors/', '<rootDir>/src/main/'],
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/domain/ports/**',
