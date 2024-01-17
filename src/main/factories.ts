@@ -3,6 +3,8 @@ import { CreateCustomerUseCase, CreateProductUseCase, ICreateCustomerUseCase, IC
 import { MongoDbClient } from '../infra/database/mongo'
 import { CustomerRepository, ProductRepository } from '../infra/repositories'
 import { GetCustomerByIdUseCase } from '../domain/usecases/GetCustomerById/GetCustomerById'
+import { GetProductByIdUseCase } from '../domain/usecases/GetProductById/GetProductById'
+import { IGetProductByIdUseCase } from '../domain/usecases/GetProductById/IGetProduct'
 
 export async function initializeContainer() {
   const mongoDbClientInstance = await MongoDbClient.connect()
@@ -17,4 +19,5 @@ export async function initializeContainer() {
   container.register<ICreateProductUseCase>('ICreateProductUseCase', CreateProductUseCase)
   container.register<IListProductsUseCase>('IListProductsUseCase', ListProductsUseCase)
   container.register<IUpdateProductUseCase>('IUpdateProductUseCase', UpdateProductUseCase)
+  container.register<IGetProductByIdUseCase>('IGetProductByIdUseCase', GetProductByIdUseCase)
 }
