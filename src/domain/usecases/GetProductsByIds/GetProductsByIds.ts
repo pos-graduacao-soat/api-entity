@@ -13,7 +13,7 @@ export class GetProductsByIdsUseCase implements IGetProductsByIdsUseCase {
   ) { }
 
   async get(params: GetProductsByIdsDTO): Promise<Product[]> {
-    if (!params.productIds) throw new MissingNecessaryDataError('Missing params: productIds')
+    if (!params.productIds) throw new MissingNecessaryDataError('Missing params: ids')
 
     const productIds = params.productIds.split(',')
 
