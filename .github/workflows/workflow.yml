@@ -16,7 +16,7 @@ jobs:
       run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
     
     - name: Build Docker image
-      run: docker build -t ${{ secrets.ECR_URI }}/api-entity:${{ env.BRANCH_NAME }} .
+      run: docker build -t ${{ secrets.ECR_URI }}:${{ env.BRANCH_NAME }} .
 
     - name: Login to AWS ECR and push Docker image
       if: github.ref == 'refs/heads/main'
@@ -28,4 +28,4 @@ jobs:
         
         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_URI }}
         
-        docker push ${{ secrets.ECR_URI }}/api-entity:${{ env.BRANCH_NAME }}
+        docker push ${{ secrets.ECR_URI }}:${{ env.BRANCH_NAME }}
