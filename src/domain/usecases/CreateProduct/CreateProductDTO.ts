@@ -3,5 +3,5 @@ export interface CreateProductDTO {
   category: string
   price: number
   description: string
-  image: string
+  imageLink: string
 }

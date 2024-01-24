@@ -30,7 +30,7 @@ describe('CreateProductController', () => {
       category: 'Beverages',
       price: 4.5,
       description: 'A soda',
-      image: '://fake.com/image.png',
+      imageLink: '://fake.com/image.png',
     }
 
     mockedHttpRequestParams.body = mockedProductData
@@ -49,6 +49,6 @@ describe('CreateProductController', () => {
     expect(response.body.category).toEqual(mockedProductData.category)
     expect(response.body.price).toEqual(mockedProductData.price)
     expect(response.body.description).toEqual(mockedProductData.description)
-    expect(response.body.image).toEqual(mockedProductData.image)
+    expect(response.body.imageLink).toEqual(mockedProductData.imageLink)
   })
 })

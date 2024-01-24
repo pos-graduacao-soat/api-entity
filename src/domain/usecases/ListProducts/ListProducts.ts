@@ -1,9 +1,9 @@
-import { inject, injectable } from "tsyringe";
-import { ListProductsDTO } from "./ListProductsDTO";
-import { Category, Product } from "../../entities/Product";
-import { InvalidParamError } from "../../errors/InvalidParam";
-import { IProductRepository } from "../../ports/repositories/Product";
-import { IListProductsUseCase } from "./IListProducts";
+import { inject, injectable } from 'tsyringe'
+import { ListProductsDTO } from './ListProductsDTO'
+import { Category, Product } from '../../entities/Product'
+import { InvalidParamError } from '../../errors/InvalidParam'
+import { IProductRepository } from '../../ports/repositories/Product'
+import { IListProductsUseCase } from './IListProducts'
 
 @injectable()
 export class ListProductsUseCase implements IListProductsUseCase {
@@ -21,7 +21,7 @@ export class ListProductsUseCase implements IListProductsUseCase {
 
     const { name, category, description, price } = params
 
-    const products = await this.productRepository.list({ category: category as Category, name, description, price });
+    const products = await this.productRepository.list({ category: category as Category, name, description, price })
 
     return products
   }

@@ -1,11 +1,10 @@
-import { inject, injectable } from "tsyringe";
-import { UpdateProductDTO } from "./UpdateProductDTO";
-import { MissingNecessaryDataError } from "../../errors/MissingNecessaryData";
-import { Category, Product } from "../../entities/Product";
-import { InvalidParamError } from "../../errors/InvalidParam";
-import { IProductRepository } from "../../ports/repositories/Product";
-import { IUpdateProductUseCase } from "./IUpdateProduct";
-import { NotFoundError } from "../../errors/NotFoundError";
+import { inject, injectable } from 'tsyringe'
+import { UpdateProductDTO } from './UpdateProductDTO'
+import { Category, Product } from '../../entities/Product'
+import { InvalidParamError } from '../../errors/InvalidParam'
+import { IProductRepository } from '../../ports/repositories/Product'
+import { IUpdateProductUseCase } from './IUpdateProduct'
+import { NotFoundError } from '../../errors/NotFoundError'
 
 @injectable()
 export class UpdateProductUseCase implements IUpdateProductUseCase {
@@ -19,13 +18,13 @@ export class UpdateProductUseCase implements IUpdateProductUseCase {
 
     const { name, category, description, price, productId } = params
 
-    const isUpdated = await this.productRepository.update({ id: productId, name, category: category as Category, description, price });
+    const isUpdated = await this.productRepository.update({ id: productId, name, category: category as Category, description, price })
 
     if (!isUpdated) throw new NotFoundError('Product not found')
 
     const updatedProduct = await this.productRepository.getById(productId)
 
-    return updatedProduct!;
+    return updatedProduct!
   }
 
   private validateParams(params: UpdateProductDTO) {
