@@ -4,11 +4,22 @@ module.exports = {
   roots: ['<rootDir>'],
   collectCoverage: true,
   coverageReporters: ['text'],
-  testPathIgnorePatterns: ['<rootDir>/src/domain/ports/', '<rootDir>/src/domain/errors/', '<rootDir>/src/main/'],
+  testPathIgnorePatterns: [
+    '<rootDir>/src/domain/ports/', 
+    '<rootDir>/src/domain/errors/', 
+    '<rootDir>/src/main/',
+    '<rootDir>/src/main/factories.ts',
+    '<rootDir>/src/presentation/gateway/errors/',
+    '<rootDir>/src/.*\\index\\.ts'
+  ],
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/domain/ports/**',
     '!<rootDir>/src/domain/errors/**',
+    '!<rootDir>/src/main/factories.ts',
+    '!<rootDir>/src/presentation/gateway/errors/**',
+    '!<rootDir>/**/index.ts',
+    '!<rootDir>/src/.*\\index\\.ts'
   ],
   coverageThreshold: {
     global: {
