@@ -2,9 +2,9 @@ import 'reflect-metadata'
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { MongoClient } from 'mongodb'
 import { MongoMemoryServer } from 'mongodb-memory-server'
-import { CustomerRepository } from '../../../src/infra/repositories/Customer'
+import { ProductRepository } from '../../../src/infra/repositories/Product'
 import { MongoDbClient } from '../../../src/infra/database/mongo'
-import { Customer } from '../../../src/domain/entities/Customer'
+import { Category, Product } from '../../../src/domain/entities/Product'
 
 describe('Product Repository Integration Tests', () => {
   let mongoServer: MongoMemoryServer
@@ -29,121 +29,200 @@ describe('Product Repository Integration Tests', () => {
   })
 
   beforeEach(async () => {
-    await client.db().collection('customers').deleteMany({})
+    await client.db().collection('products').deleteMany({})
   })
 
-  function insertCustomer(customer: Customer) {
-    return client.db().collection('customers').insertOne({
-      id: customer.id,
-      name: customer.name,
-      email: customer.email,
-      documentNumber: customer.documentNumber,
-    })
+  function insertProduct(product: Product) {
+    return client.db().collection('products').insertOne(product)
   }
 
   describe('create', () => {
-    it('should create a new customer', async () => {
-      const customerData = {
-        name: 'John Doe',
-        email: 'johndoe@example.com',
-        documentNumber: '123456789',
+    it('should create a new product', async () => {
+      const productData = {
+        name: 'soda',
+        category: Category.Beverages,
+        price: 12,
+        description: 'description'
       }
 
-      const mockedCustomer = new Customer(customerData)
+      const mockedProduct = new Product(productData)
 
-      const customerRepository = new CustomerRepository(mongoDbClient)
-      const created = await customerRepository.create(mockedCustomer)
+      const productRepository = new ProductRepository(mongoDbClient)
+      const created = await productRepository.create(mockedProduct)
 
       expect(created).toBe(true)
     })
   })
 
   describe('getById', () => {
-    it('should get a customer by ID', async () => {
-      const customerData = {
-        name: 'John Doe',
-        email: 'johndoe@example.com',
-        documentNumber: '123456789',
+    it('should get a product by ID', async () => {
+      const productData = {
+        name: 'soda',
+        category: Category.Beverages,
+        price: 12,
+        description: 'description'
       }
 
-      const mockedCustomer = new Customer(customerData)
+      const mockedProduct = new Product(productData)
 
-      const customerRepository = new CustomerRepository(mongoDbClient)
+      const productRepository = new ProductRepository(mongoDbClient)
 
-      await insertCustomer(mockedCustomer)
+      await insertProduct(mockedProduct)
 
-      const customer = await customerRepository.getById(mockedCustomer.id)
+      const product = await productRepository.getById(mockedProduct.id)
 
-      expect(customer).toBeDefined()
-      expect(customer?.name).toBe('John Doe')
+      expect(product).toBeDefined()
+      expect(product?.name).toBe(productData.name)
+      expect(product?.category).toBe(productData.category)
+      expect(product?.price).toBe(productData.price)
+      expect(product?.description).toBe(productData.description)
     })
 
-    it('should return null if customer is not found', async () => {
-      const customerRepository = new CustomerRepository(mongoDbClient)
+    it('should return null if product is not found', async () => {
+      const productRepository = new ProductRepository(mongoDbClient)
 
-      const customer = await customerRepository.getById('12345')
+      const product = await productRepository.getById('12345')
 
-      expect(customer).toBeNull()
+      expect(product).toBeNull()
     })
   })
 
-  describe('getByDocumentNumber', () => {
-    it('should get a customer by document number', async () => {
-      const customerData = {
-        name: 'John Doe',
-        email: 'johndoe@example.com',
-        documentNumber: '123456789',
+  describe('getByIds', () => {
+    it('should get products by IDs', async () => {
+      const productData = {
+        name: 'soda',
+        category: Category.Beverages,
+        price: 12,
+        description: 'description'
       }
 
-      const mockedCustomer = new Customer(customerData)
+      const mockedProduct = new Product(productData)
 
-      const customerRepository = new CustomerRepository(mongoDbClient)
+      const productRepository = new ProductRepository(mongoDbClient)
 
-      await insertCustomer(mockedCustomer)
+      await insertProduct(mockedProduct)
 
-      const customer = await customerRepository.getByDocumentNumber(mockedCustomer.documentNumber!)
+      const products = await productRepository.getByIds([mockedProduct.id])
 
-      expect(customer).toBeDefined()
-      expect(customer?.name).toBe('John Doe')
-      expect(customer?.documentNumber).toBe('123456789')
+      expect(products.length).toBe(1)
+      expect(products[0].name).toBe(productData.name)
+      expect(products[0].category).toBe(productData.category)
+      expect(products[0].price).toBe(productData.price)
+      expect(products[0].description).toBe(productData.description)
     })
 
-    it('should return null if customer is not found', async () => {
-      const customerRepository = new CustomerRepository(mongoDbClient)
+    it('should return empty array if products are not found', async () => {
+      const productRepository = new ProductRepository(mongoDbClient)
 
-      const customer = await customerRepository.getByDocumentNumber('12345')
+      const products = await productRepository.getByIds(['12345'])
 
-      expect(customer).toBeNull()
+      expect(products.length).toBe(0)
     })
   })
 
-  describe('getByDocumentNumber', () => {
-    it('should get a customer by email', async () => {
-      const customerData = {
-        name: 'John Doe',
-        email: 'johndoe@example.com',
-        documentNumber: '123456789',
+  describe('list', () => {
+    it('should list products correctly', async () => {
+      const productData = {
+        name: 'soda',
+        category: Category.Beverages,
+        price: 12,
+        description: 'description'
       }
 
-      const mockedCustomer = new Customer(customerData)
+      await insertProduct(new Product(productData))
+      await insertProduct(new Product({ ...productData, name: 'water' }))
+      await insertProduct(new Product({ ...productData, name: 'diet soda' }))
 
-      const customerRepository = new CustomerRepository(mongoDbClient)
+      const productRepository = new ProductRepository(mongoDbClient)
 
-      await insertCustomer(mockedCustomer)
+      const products = await productRepository.list({})
 
-      const customer = await customerRepository.getByEmail(mockedCustomer.email!)
-
-      expect(customer).toBeDefined()
-      expect(customer?.name).toBe('John Doe')
-      expect(customer?.email).toBe('johndoe@example.com')
+      expect(products.length).toBe(3)
     })
 
-    it('should return null if customer is not found', async () => {
-      const customerRepository = new CustomerRepository(mongoDbClient)
+    it('should filter correctly from the list', async () => {
+      const productData = {
+        name: 'soda',
+        category: Category.Beverages,
+        price: 12,
+        description: 'description'
+      }
 
-      const customer = await customerRepository.getByEmail('email')
+      await insertProduct(new Product(productData))
+      await insertProduct(new Product({ ...productData, name: 'water' }))
+      await insertProduct(new Product({ ...productData, name: 'diet soda' }))
 
-      expect(customer).toBeNull()
+      const productRepository = new ProductRepository(mongoDbClient)
+
+      const products = await productRepository.list({ name: productData.name })
+
+      expect(products.length).toBe(1)
+      expect(products[0].name).toBe(productData.name)
+      expect(products[0].category).toBe(productData.category)
+      expect(products[0].price).toBe(productData.price)
+      expect(products[0].description).toBe(productData.description)
+    })
+
+    it('should return empty array if products are not found', async () => {
+      const productRepository = new ProductRepository(mongoDbClient)
+
+      const products = await productRepository.list({})
+
+      expect(products.length).toBe(0)
+    })
+  })
+
+  describe('update', () => {
+    it('should update a product correctly', async () => {
+      const productData = {
+        name: 'soda',
+        category: Category.Beverages,
+        price: 12,
+        description: 'description'
+      }
+
+      const mockedProduct = new Product(productData)
+
+      const productRepository = new ProductRepository(mongoDbClient)
+
+      await insertProduct(mockedProduct)
+
+      const updatedData = {
+        name: 'diet soda',
+        category: Category.Beverages,
+        price: 10,
+        description: 'diet soda ugh'
+      }
+
+      const updatedProduct = new Product({ ...updatedData, id: mockedProduct.id })
+
+      const product = await productRepository.update(updatedProduct)
+
+      expect(product).toBeTruthy()
+
+      const updatedProductFromDb = await client.db().collection('products').findOne({ id: updatedProduct.id })
+
+      expect(updatedProductFromDb?.name).toBe(updatedProduct.name)
+      expect(updatedProductFromDb?.category).toBe(updatedProduct.category)
+      expect(updatedProductFromDb?.price).toBe(updatedProduct.price)
+      expect(updatedProductFromDb?.description).toBe(updatedProduct.description)
+    })
+
+    it('should return false if product is not updated', async () => {
+      const productData = {
+        name: 'soda',
+        category: Category.Beverages,
+        price: 12,
+        description: 'description'
+      }
+
+      const mockedProduct = new Product(productData)
+
+      const productRepository = new ProductRepository(mongoDbClient)
+
+      const product = await productRepository.update(mockedProduct)
+
+      expect(product).toBeFalsy()
     })
   })
 })

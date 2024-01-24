@@ -7,9 +7,10 @@ import { GetProductByIdUseCase } from '../domain/usecases/GetProductById/GetProd
 import { IGetProductByIdUseCase } from '../domain/usecases/GetProductById/IGetProduct'
 import { IGetProductsByIdsUseCase } from '../domain/usecases/GetProductsByIds/IGetProductsByIds'
 import { GetProductsByIdsUseCase } from '../domain/usecases/GetProductsByIds/GetProductsByIds'
+import { env } from './env'
 
 export async function initializeContainer() {
-  const mongoDbClientInstance = await MongoDbClient.connect()
+  const mongoDbClientInstance = await MongoDbClient.connect(env.mongoUrl)
 
   container.registerInstance('MongoDbClient', mongoDbClientInstance)
 
