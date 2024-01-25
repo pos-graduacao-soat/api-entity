@@ -14,7 +14,6 @@ export class HttpErrorHandler {
         message: parsedError.message,
         body: {
           details: parsedError.details,
-          //stack: process.env.NODE_ENV !== 'production' ? error.stack : undefined
         }
       }
     }

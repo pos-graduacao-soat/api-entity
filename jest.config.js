@@ -8,15 +8,14 @@ module.exports = {
     '<rootDir>/src/domain/ports/', 
     '<rootDir>/src/domain/errors/', 
     '<rootDir>/src/main/',
-    '<rootDir>/src/main/factories.ts',
     '<rootDir>/src/presentation/gateway/errors/',
-    '<rootDir>/src/.*\\index\\.ts'
+    '<rootDir>/src/.*\\index\\.ts',
   ],
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/domain/ports/**',
     '!<rootDir>/src/domain/errors/**',
-    '!<rootDir>/src/main/factories.ts',
+    '!<rootDir>/src/main/**',
     '!<rootDir>/src/presentation/gateway/errors/**',
     '!<rootDir>/**/index.ts',
     '!<rootDir>/src/.*\\index\\.ts'
