@@ -8,7 +8,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  tests:
+  code-quality:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -20,21 +20,14 @@ jobs:
       run: npm ci
     - name: Run tests
       run: npm test
-
-  sonarqube-code-analysis:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-    - name: SonarQube Scan
+    - name: SonarQube Code Analysis
       uses: sonarsource/sonarcloud-github-action@master
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  build-push-image:
-    needs: [tests, sonarqube-code-analysis]
+  continuous-integration:
+    needs: [code-quality]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
