@@ -3,7 +3,8 @@ module.exports = {
   testEnvironment: 'node',
   roots: ['<rootDir>'],
   collectCoverage: true,
-  coverageReporters: ['text'],
+  coverageReporters: ['json', 'lcov', 'text', 'clover'],
+  coverageDirectory: '<rootDir>/coverage',
   testPathIgnorePatterns: [
     '<rootDir>/src/domain/ports/', 
     '<rootDir>/src/domain/errors/', 
