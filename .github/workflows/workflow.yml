@@ -2,7 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "*" ]
+    branches: [ "main" ]
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   run-tests:
@@ -18,8 +20,20 @@ jobs:
     - name: Run tests
       run: npm test
 
+  sonarqube-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: SonarQube Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
   build-push-image:
-    needs: [run-tests]
+    needs: [run-tests, sonarqube-scan]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
