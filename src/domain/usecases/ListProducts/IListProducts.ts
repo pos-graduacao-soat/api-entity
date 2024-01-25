@@ -1,5 +1,5 @@
-import { Product } from "../../entities/Product";
-import { ListProductsDTO } from "./ListProductsDTO";
+import { Product } from '../../entities/Product'
+import { ListProductsDTO } from './ListProductsDTO'
 
 export interface IListProductsUseCase {
   list: (params: ListProductsDTO) => Promise<Product[]>
