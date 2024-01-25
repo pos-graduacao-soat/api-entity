@@ -8,7 +8,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  run-tests:
+  tests:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -21,7 +21,7 @@ jobs:
     - name: Run tests
       run: npm test
 
-  sonarqube-scan:
+  sonarqube-code-analysis:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -34,7 +34,7 @@ jobs:
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
   build-push-image:
-    needs: [run-tests, sonarqube-scan]
+    needs: [tests, sonarqube-code-analysis]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
