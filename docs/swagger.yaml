@@ -1,15 +1,15 @@
 openapi: "3.0.2"
 info:
   version: 1.0.0
-  title: Lanchonete 55
+  title: API Entity
   description: >
-    **Sistema de gestão e pedidos de uma lanchonete onde é possível cadastrar, produtos, clientes e realizar pedidos**
+    **Service responsible for CRUD operations of Products and Customers**
 paths:
   /customers:
     post:
       tags:
         - Customers
-      summary: Cria um cliente
+      summary: Create a new customer
       requestBody:
         content:
           application/json:
@@ -24,7 +24,7 @@ paths:
                   email: "gabriel@email.com"
       responses:
         200:
-          description: Cliente registrado com sucesso
+          description: Customer registered successfully
           content:
             application/json:
               schema:
@@ -34,7 +34,7 @@ paths:
                     $ref: "#/components/schemas/CreatedCustomerSchema"
                   message:
                     type: string
-                    description: Mensagem de sucesso.
+                    description: Sucess
         400:
           $ref: "#/components/responses/BadRequest"
         500:
@@ -43,17 +43,17 @@ paths:
     get:
       tags:
         - Customers
-      summary: Busca um cliente por ID
+      summary: Get customer by id
       parameters:
-        - name: id
+        - name: customerId
           in: path
           required: true
-          description: Id do cliente
+          description: Customer id
           schema:
             type: string
       responses:
         200:
-          description: Cliente encontrado
+          description: Customer found
           content:
             application/json:
               schema:
@@ -63,7 +63,7 @@ paths:
                     $ref: "#/components/schemas/CreatedCustomerSchema"
                   message:
                     type: string
-                    description: Mensagem de sucesso.
+                    description: Sucess
         404:
           $ref: "#/components/responses/NotFound"
         500:
@@ -72,7 +72,7 @@ paths:
     post:
       tags:
         - Products
-      summary: Cria um novo produto
+      summary: Create new product
       requestBody:
         content:
           application/json:
@@ -80,7 +80,7 @@ paths:
               $ref: "#/components/schemas/ProductToCreateSchema"
       responses:
         200:
-          description: Produto registrado com sucesso
+          description: Product created
           content:
             application/json:
               schema:
@@ -90,7 +90,7 @@ paths:
                     $ref: "#/components/schemas/CreatedProductSchema"
                   message:
                     type: string
-                    description: Mensagem de sucesso.
+                    description: Sucess
         400:
           $ref: "#/components/responses/BadRequest"
         500:
@@ -98,12 +98,12 @@ paths:
     get:
       tags:
         - Products
-      summary: Listagem de produtos
+      summary: Product listing
       parameters:
         - name: category
           in: query
           required: false
-          description: Categorias do produto
+          description: Product category
           schema:
             type: string
             enum:
@@ -113,7 +113,7 @@ paths:
               - Desserts
       responses:
         200:
-          description: Listagem de pedidos
+          description: List of products
           content:
             application/json:
               schema:
@@ -122,22 +122,22 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/CreatedOrderSchema"
+                      $ref: "#/components/schemas/CreatedProductSchema"
                   message:
                     type: string
-                    description: Mensagem de sucesso.
+                    description: Sucess
         500:
           $ref: "#/components/responses/InternalServerError"
   /products/{id}:
     patch:
       tags:
         - Products
-      summary: Atualiza um produto
+      summary: Update existing product
       parameters:
         - name: id
           in: path
           required: true
-          description: Id do produto
+          description: Product ID
           schema:
             type: string
       requestBody:
@@ -156,7 +156,7 @@ paths:
                   image: "/link/da/imagem"
       responses:
         200:
-          description: Produto registrado com sucesso
+          description: Product updated
           content:
             application/json:
               schema:
@@ -165,7 +165,7 @@ paths:
                     $ref: "#/components/schemas/CreatedProductSchema"
                   message:
                     type: string
-                    description: Mensagem de sucesso.
+                    description: Sucess
         400:
           $ref: "#/components/responses/BadRequest"
         404:
@@ -175,27 +175,59 @@ paths:
 
     get:
       tags:
-        - Payments
-      summary: Busca um pagamento por id do pedido
+        - Products
+      summary: Get product by id
       parameters:
         - name: id
           in: path
           required: true
-          description: Id do pedido
+          description: Product ID
           schema:
             type: string
       responses:
         200:
-          description: Pagamento encontrado com sucesso
+          description: Product #/components/responses/NotFound"
           content:
             application/json:
               schema:
                 properties:
                   data:
-                    $ref: "#/components/schemas/PaymentSchema"
+                    $ref: "#/components/schemas/CreatedProductSchema"
                   message:
                     type: string
-                    description: Mensagem de sucesso.
+                    description: Success
+        400:
+          $ref: "#/components/responses/BadRequest"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalServerError"
+  /products/ids:
+    get:
+      tags:
+        - Products
+      summary: Get products by ids
+      parameters:
+        - name: ids
+          in: query
+          required: true
+          description: Product IDs separated by comma
+          schema:
+            type: string
+      responses:
+        200:
+          description: Products found
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/CreatedProductSchema"
+                  message:
+                    type: string
+                    description: Success
         400:
           $ref: "#/components/responses/BadRequest"
         404:
@@ -206,71 +238,71 @@ components:
   schemas:
     CreatedCustomerSchema:
       type: object
-      description: Propriedades completas de um cliente.
+      description: Full properties of a customer.
       properties:
         id:
           type: string
-          description: Id do cliente.
+          description: Customer id.
         documentNumber:
           type: string
-          description: Numero do CPF da pessoal.
+          description: Person's CPF number.
         name:
           type: string
-          description: Nome da pessoa.
+          description: Person's name.
         email:
           type: string
-          description: Email da pessoa.
+          description: Person's email.
         createdAt:
           type: string
           format: date-time
-          description: Data de criação do cliente.
+          description: Customer creation date.
         updatedAt:
           type: string
           format: date-time
-          description: Data de atualização do cliente.
+          description: Customer update date.
     CreatedProductSchema:
       type: object
-      description: Propriedades completas de um produto.
+      description: Full properties of a product.
       properties:
         id:
           type: string
-          description: Id do produto.
+          description: Product id.
         name:
           type: string
-          description: Nome do produto.
+          description: Product name.
         description:
           type: string
-          description: Descrição do produto.
+          description: Product description.
         category:
           type: string
-          description: Categoria do produto.
+          description: Product category.
         price:
           type: number
-          description: Preço do produto.
+          description: Product price.
         createdAt:
           type: string
           format: date-time
-          description: Data de criação do cliente.
+          description: Product creation date.
         updatedAt:
           type: string
           format: date-time
-          description: Data de atualização do cliente.
+          description: Product update date.
     CustomerToCreateSchema:
       type: object
-      description: Propriedades para se criar um produto.
+      description: Properties to create a product.
       properties:
         documentNumber:
           type: string
-          description: Numero do CPF da pessoal.
+          description: Person's CPF number.
         name:
           type: string
-          description: Nome da pessoa.
+          description: Person's name.
         email:
           type: string
-          description: Email da pessoa.
+          description: Person's email.
     ProductToCreateSchema:
       type: object
-      description: Propriedades para se criar um produto.
+      description: Properties to create a product.
       required:
         - name
         - category
@@ -279,13 +311,13 @@ components:
       properties:
         name:
           type: string
-          description: Nome do produto.
+          description: Product name.
         description:
           type: string
-          description: Descrição do produto.
+          description: Product description.
         category:
           type: string
-          description: Categoria do produto.
+          description: Product category.
           enum:
             - Beverages
             - MainCourses
@@ -293,20 +325,20 @@ components:
             - Desserts
         price:
           type: number
-          description: Preço do produto.
+          description: Product price.
     ProductToUpdateSchema:
       type: object
-      description: Propriedades para se atualizar um produto.
+      description: Properties to update a product.
       properties:
         name:
           type: string
-          description: Nome do produto.
+          description: Product name.
         description:
           type: string
-          description: Descrição do produto.
+          description: Product description.
         category:
           type: string
-          description: Categoria do produto.
+          description: Product category.
           enum:
             - Beverages
             - MainCourses
@@ -314,7 +346,7 @@ components:
             - Desserts
         price:
           type: number
-          description: Preço do produto.
+          description: Product price.
   responses:
     BadRequest:
       description: Invalid Request
