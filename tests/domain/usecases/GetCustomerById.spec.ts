@@ -14,6 +14,8 @@ describe('GetCustomerByIdUseCase', () => {
       create: jest.fn(),
       getByDocumentNumber: jest.fn(),
       getByEmail: jest.fn(),
+      getByName: jest.fn(),
+      inactivate: jest.fn(),
     }
 
     useCase = new GetCustomerByIdUseCase(customerRepositoryMock)

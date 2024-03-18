@@ -17,6 +17,8 @@ describe('CreateCustomerUseCase', () => {
       getById: jest.fn(),
       getByEmail: jest.fn(),
       getByDocumentNumber: jest.fn(),
+      getByName: jest.fn(),
+      inactivate: jest.fn(),
     }
 
     createCustomerUseCase = new CreateCustomerUseCase(customerRepository)
