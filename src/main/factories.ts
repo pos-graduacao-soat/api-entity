@@ -8,6 +8,8 @@ import { IGetProductByIdUseCase } from '../domain/usecases/GetProductById/IGetPr
 import { IGetProductsByIdsUseCase } from '../domain/usecases/GetProductsByIds/IGetProductsByIds'
 import { GetProductsByIdsUseCase } from '../domain/usecases/GetProductsByIds/GetProductsByIds'
 import { env } from './env'
+import { IInactivateCustomerUseCase } from '../domain/usecases/InactivateCustomer/IInactivateCustomer'
+import { InactivateCustomerUseCase } from '../domain/usecases/InactivateCustomer/InactivateCustomer'
 
 export async function initializeContainer() {
   const mongoDbClientInstance = await MongoDbClient.connect(env.mongoUrl)
@@ -24,4 +26,5 @@ export async function initializeContainer() {
   container.register<IUpdateProductUseCase>('IUpdateProductUseCase', UpdateProductUseCase)
   container.register<IGetProductByIdUseCase>('IGetProductByIdUseCase', GetProductByIdUseCase)
   container.register<IGetProductsByIdsUseCase>('IGetProductsByIdsUseCase', GetProductsByIdsUseCase)
+  container.register<IInactivateCustomerUseCase>('IInactivateCustomerUseCase', InactivateCustomerUseCase)
 }

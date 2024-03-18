@@ -68,4 +68,32 @@ export class CustomerRepository implements ICustomerRepository {
       documentNumber: customer.documentNumber
     })
   }
+
+  async getByName(name: string): Promise<Customer | null> {
+    const customer = await this.collection.findOne({ name })
+
+    if (!customer) return null
+
+    return new Customer({
+      createdAt: customer.createdAt,
+      updatedAt: customer.updatedAt,
+      id: customer.id,
+      name: customer.name,
+      email: customer.email,
+      documentNumber: customer.documentNumber
+    })
+  }
+
+  async inactivate(id: string): Promise<boolean> {
+    const inactivatedCustomer = await this.collection.updateOne({ id }, {
+      $set: {
+        name: 'Inactive Customer',
+        email: '',
+        documentNumber: '',
+        updatedAt: new Date()
+      }
+    })
+
+    return inactivatedCustomer.modifiedCount > 0
+  }
 }

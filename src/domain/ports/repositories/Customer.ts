@@ -5,4 +5,6 @@ export interface ICustomerRepository {
   getById: (id: string) => Promise<Customer | null>
   getByDocumentNumber: (documentNumber: string) => Promise<Customer | null>
   getByEmail: (email: string) => Promise<Customer | null>
+  getByName: (name: string) => Promise<Customer | null>
+  inactivate: (id: string) => Promise<boolean>
 }
